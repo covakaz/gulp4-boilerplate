@@ -1,0 +1,21 @@
+@charset "utf-8";
+
+html {
+  background: #fff;
+  color: #000;
+  font-family: 'Noto Sans JP', 'ヒラギノ角ゴ Pro W3', 'Hiragino Kaku Gothic Pro', Yu Gothic, YuGothic, '游ゴシック', 'メイリオ', Meiryo, 'Osaka', 'ＭＳ Ｐゴシック', 'MS PGothic', sans-serif;
+  font-size: 16px;
+  @include media (sp) {
+    font-size: sp(26);
+  }
+}
+
+img {
+  vertical-align: middle;
+  @include media(sp) {
+    max-width: 100%;
+    height: auto;
+  }
+}
+
+* { box-sizing: border-box; }

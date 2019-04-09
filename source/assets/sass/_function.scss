@@ -1,0 +1,12 @@
+@charset "utf-8";
+
+@function stripUnit($number) {
+  @if type-of($number) == 'number' and not unitless($number) {
+    @return $number / ($number * 0 + 1);
+  }
+  @return $number;
+}
+
+@function sp($size) {
+  @return #{($size / stripUnit($breakpoint-sp) * 100)}vw;
+}

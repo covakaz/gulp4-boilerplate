@@ -1,0 +1,7 @@
+@charset "utf-8";
+
+$breakpoint-sp: 750;
+
+$breakpoints: (
+  sp : "only screen and (max-width: #{$breakpoint-sp}px)",
+);

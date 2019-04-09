@@ -1,0 +1,10 @@
+# Node files
+node_modules/
+npm-debug.log
+package-lock.json
+
+# Editor setting files
+.idea/
+
+# Mac files
+*/.DS_Store

@@ -1,0 +1,42 @@
+@charset "utf-8";
+
+.uti-tal { text-align: left   !important; }
+.uti-tac { text-align: center !important; }
+.uti-tar { text-align: right  !important; }
+
+.uti-fl { float: left  !important; }
+.uti-fr { float: right !important; }
+
+.uti-fwn { font-weight: normal !important; }
+.uti-fwb { font-weight: bold   !important; }
+
+.uti-sp-tal { @include media(sp) {text-align: left   !important; }}
+.uti-sp-tac { @include media(sp) {text-align: center !important; }}
+.uti-sp-tar { @include media(sp) {text-align: right  !important; }}
+
+.uti-sp-fl { @include media(sp) {float: left  !important; }}
+.uti-sp-fr { @include media(sp) {float: right !important; }}
+
+.uti-sp-fwn { @include media(sp) {font-weight: normal !important; }}
+.uti-sp-fwb { @include media(sp) {font-weight: bold   !important; }}
+
+%clearfix {
+  &:before,
+  &:after{
+    content: " ";
+    display: table;
+  }
+
+  &:after{ clear: both; }
+
+  &{ *zoom: 1; }
+}
+
+.uti-clearfix {
+  @extend %clearfix;
+}
+
+.uti-pc    { @include media(sp) { display: none; } }
+.uti-sp    { display: none; @include media(sp) { display: block; } }
+.uti-sp-i  { display: none; @include media(sp) { display: inline; } }
+.uti-sp-ib { display: none; @include media(sp) { display: inline-block; } }
