@@ -5,6 +5,7 @@ const uglify         = require('gulp-uglify');
 const imagemin       = require('gulp-imagemin');
 const mozjpeg        = require('imagemin-mozjpeg');
 const pngquant       = require('imagemin-pngquant');
+const postcss        = require('gulp-postcss');
 const autoprefixer   = require('autoprefixer');
 const browserSync    = require('browser-sync').create();
 const notify         = require('gulp-notify');
@@ -12,6 +13,8 @@ const plumber        = require('gulp-plumber');
 const rename         = require('gulp-rename');
 const replace        = require('gulp-replace');
 const del            = require('del');
+
+const supportBrowser = ['last 3 versions', 'ie >= 8', 'Android >= 4', 'iOS >= 8'];
 
 const paths = {
   root: {
@@ -36,10 +39,6 @@ const paths = {
     dest: './public/assets/images/',
   },
 };
-// Post CSS
-const autoprefixerOption = {
-  grid: true,
-};
 
 // EJSコンパイル
 function html() {
@@ -59,34 +58,32 @@ function html() {
 function styles() {
   return gulp
     .src(paths.styles.source, { sourcemaps: true })
-    .pipe(
-      plumber({
-        errorHandler: notify.onError('<%= error.message %>'),
-      }),
-    )
-    .pipe(
-      sass({
-        outputStyle: 'expanded',
-      }),
-    )
+    .pipe(plumber({errorHandler: notify.onError('<%= error.message %>')}))
+    .pipe(sass({outputStyle: 'expanded'}))
+    .pipe(postcss([
+      autoprefixer({
+        browsers: supportBrowser,
+        cascade: false
+      })
+    ]))
     .pipe(gulp.dest(paths.styles.dest, { sourcemaps: './maps' }));
 }
+
 // Sassコンパイル（圧縮）
-function sassCompress() {
+function stylesCompress() {
   return gulp
     .src(paths.styles.source)
-    .pipe(
-      plumber({
-        errorHandler: notify.onError('<%= error.message %>'),
-      }),
-    )
-    .pipe(
-      sass({
-        outputStyle: 'compressed',
-      }),
-    )
+    .pipe(plumber({errorHandler: notify.onError('<%= error.message %>')}))
+    .pipe(sass({outputStyle: 'compressed'}))
+    .pipe(postcss([
+      autoprefixer({
+        browsers: supportBrowser,
+        cascade: false
+      })
+    ]))
     .pipe(gulp.dest(paths.styles.dest));
 }
+
 // JSコンパイル
 function scripts() {
   return gulp
@@ -95,11 +92,12 @@ function scripts() {
     .pipe(uglify())
     .pipe(gulp.dest(paths.scripts.dest));
 }
+
 // 画像最適化
 const imageminOption = [
-  pngquant({
-    quality: [0.7, 0.85],
-  }),
+  // pngquant({
+  //   quality: [0.7, 0.85],
+  // }),
   // mozjpeg({
   //   quality: 85,
   // }),
@@ -155,4 +153,4 @@ gulp.task('default', gulp.series(browsersync, watchFiles));
 
 gulp.task('clean', cleanDest);
 gulp.task('build', gulp.series('clean', gulp.parallel(html, styles, scripts, images)));
-gulp.task('release', gulp.series('clean', gulp.parallel(html, sassCompress, scripts, images)));
+gulp.task('release', gulp.series('clean', gulp.parallel(html, stylesCompress, scripts, images)));
